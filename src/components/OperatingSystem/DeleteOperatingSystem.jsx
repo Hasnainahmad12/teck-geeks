@@ -1,27 +1,22 @@
 import React, { useEffect } from "react";
-import { useDeleteAddOnMutation } from "../../apis/Add-On/AddOn";
 import toast from "react-hot-toast";
+import { useDeleteOperatingSystemMutation } from "../../apis/OperatingSystem/OperatingSystem";
 
-function DeleteAddOn({ onClose }) {
-
-  const [deleteAddOn, { isLoading, isSuccess, isError, error }] =
-    useDeleteAddOnMutation();
+function DeleteOperatingSystem({ onClose, id }) {
+  const [deletePlan, { isLoading, isSuccess, isError, error }] =
+    useDeleteOperatingSystemMutation();
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Add-On deleted successfully");
+      toast.success("Operating System deleted successfully");
       onClose();
     } else if (isError) {
-      toast.error(error?.data?.error || "Failed to delete Add-On");
+      toast.error(error?.data?.error || "Failed to delete Operating System");
     }
   }, [isSuccess, isError, error]);
 
   const handleDelete = async () => {
-    try {
-      await deleteAddOn();
-    } catch (error) {
-      console.log(error);
-    }
+    await deletePlan(id);
   };
 
   return (
@@ -52,10 +47,10 @@ function DeleteAddOn({ onClose }) {
               </svg>
               {/* <img src="" alt=""> */}
               <p className="mt-4 text-center text-xl font-bold">
-                Deleting Add-On
+                Deleting Operating System
               </p>
               <p className="mt-2 text-center text-lg">
-                Are you sure you want to delete the Add-On
+                Are you sure you want to delete the Operating System
                 <span className="truncate font-medium"></span>?
               </p>
               <div className="mt-8 flex flex-col justify-center space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0">
@@ -92,7 +87,7 @@ function DeleteAddOn({ onClose }) {
                   onClick={onClose}
                   className="whitespace-nowrap rounded-md bg-gray-200 px-4 py-3 font-medium"
                 >
-                  Cancel, keep the Add-ON
+                  Cancel, keep the product
                 </button>
               </div>
             </div>
@@ -103,4 +98,4 @@ function DeleteAddOn({ onClose }) {
   );
 }
 
-export default DeleteAddOn;
+export default DeleteOperatingSystem;

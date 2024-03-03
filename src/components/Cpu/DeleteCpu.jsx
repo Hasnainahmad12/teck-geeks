@@ -1,26 +1,22 @@
 import React, { useEffect } from "react";
-import { useDeleteSuiteMutation } from "../../apis/EngageSuites/SuitesSlice";
 import toast from "react-hot-toast";
+import { useDeleteCpuMutation } from "../../apis/Cpu/Cpu";
 
-function DeleteSuites({ onClose, id }) {
-  const [deleteSuite, { isLoading, isSuccess, isError, error }] =
-    useDeleteSuiteMutation();
+function DeleteCpu({ onClose, id }) {
+  const [deletePlan, { isLoading, isSuccess, isError, error }] =
+    useDeleteCpuMutation();
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Suites deleted successfully");
+      toast.success("Cpu deleted successfully");
       onClose();
     } else if (isError) {
-      toast.error(error?.data?.error || "Failed to delete Suites");
+      toast.error(error?.data?.error || "Failed to delete Cpu");
     }
   }, [isSuccess, isError, error]);
 
   const handleDelete = async () => {
-    try {
-      await deleteSuite(id);
-    } catch (error) {
-      console.log(error);
-    }
+    await deletePlan(id);
   };
 
   return (
@@ -51,10 +47,10 @@ function DeleteSuites({ onClose, id }) {
               </svg>
               {/* <img src="" alt=""> */}
               <p className="mt-4 text-center text-xl font-bold">
-                Deleting Suite
+                Deleting Cpu
               </p>
               <p className="mt-2 text-center text-lg">
-                Are you sure you want to delete the Suite
+                Are you sure you want to delete the Cpu
                 <span className="truncate font-medium"></span>?
               </p>
               <div className="mt-8 flex flex-col justify-center space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0">
@@ -84,14 +80,14 @@ function DeleteSuites({ onClose, id }) {
                       />
                     </svg>
                   ) : (
-                    "  Yes, delete the Suite"
+                    "  Yes, delete the product"
                   )}
                 </button>
                 <button
                   onClick={onClose}
                   className="whitespace-nowrap rounded-md bg-gray-200 px-4 py-3 font-medium"
                 >
-                  Cancel, keep the Suite
+                  Cancel, keep the product
                 </button>
               </div>
             </div>
@@ -102,4 +98,4 @@ function DeleteSuites({ onClose, id }) {
   );
 }
 
-export default DeleteSuites;
+export default DeleteCpu;
