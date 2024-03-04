@@ -4,7 +4,7 @@ import { IoAddOutline } from "react-icons/io5";
 import { Images } from "../assets/Images";
 import { Link } from "react-router-dom";
 import DeleteProductModal from "../components/Products/DeleteProductModal";
-import { useGetPlansQuery } from "../apis/AddBrand/AddBrandSlice";
+import { useGetProductQuery } from "../apis/Products/Products";
 
 function Products() {
   const [deleteProduct, setDeleteProduct] = useState(false);
@@ -12,7 +12,7 @@ function Products() {
     id: "",
     title: "",
   });
-  const { data, error, isLoading } = useGetPlansQuery();
+  const { data, error, isLoading } = useGetProductQuery();
 
   const handleDelete = (id, title) => {
     setDeleteProduct(true);
@@ -50,48 +50,64 @@ function Products() {
                     <th className="flex items-center py-3 pl-6 font-medium">
                       Images
                     </th>
-                    <th className="px-6 py-3 font-medium">Products</th>
+                    <th className="px-6 py-3 font-medium">Products Name</th>
+                    <th className="px-6 py-3 font-medium">Brands</th>
+                    <th className="px-6 py-3 font-medium">hardisk</th>
+                    {/* <th className="px-6 py-3 font-medium">cpu</th> */}
+                    <th className="px-6 py-3 font-medium">operating sysytem</th>
+                    <th className="px-6 py-3 font-medium">Ram</th>
+                    <th className="px-6 py-3 font-medium">price</th>
+                    <th className="px-6 py-3 font-medium">stock</th>
                     <th className="px-6 py-3 font-medium">Status</th>
-                    <th className="px-6 py-3 font-medium">
-                      Subscription Plans
-                    </th>
-                    <th className="px-6 py-3 font-medium">Price</th>
                     <th className="px-6 py-3 font-medium">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data &&
-                    data.map((product) => (
+                  {data?.data?.map((product) => (
                       <tr
                         key={product._id}
                         className="border-b border-gray-200"
                       >
                         <td className="px-6 text-sm font-medium">
                           <img
-                            src={product?.images[0]?.url}
+                            src={product?.image}
                             alt="product"
                             className="w-10 h-10 rounded-md"
                           />
                         </td>
                         <td className="px-6 text-sm font-medium">
-                          {product.title}
+                          {product.productname.substring(0, 23)}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.brands}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.hardisk}
+                        </td>
+                        {/* <td className="px-6 text-sm font-medium">
+                          {product.cpu}
+                        </td> */}
+                        <td className="px-6 text-sm font-medium">
+                          {product.operatingsysytem}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.ram}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.price}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.stock}
                         </td>
                         <td className="px-6 text-sm">
                           <span
                             className={`inline-block px-2 py-1 ${
-                              product.status === "active"
+                              product.status === 1
                                 ? "text-green-700 bg-green-100"
                                 : "text-red-700 bg-red-100"
                             } rounded-md`}
                           >
-                            {product.status.charAt(0).toUpperCase() +
-                              product.status.slice(1)}
-                          </span>
-                        </td>
-                        <td className="px-6 text-sm font-medium">{product.period}</td>
-                        <td className="px-6 text-sm font-medium">
-                          <span className="inline-block px-2 py-1 text-gray-700">
-                            ${product.price}
+                            {product.status === 1 ? "Active" : "Inactive"}
                           </span>
                         </td>
                         <td className="px-6 text-sm font-medium">

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
-import { useDeletePlanMutation } from "../../apis/AddBrand/AddBrandSlice";
+import { useDeleteProductMutation } from "../../apis/Products/Products";
 
 function DeleteProductModal({ onClose, deleteData }) {
   const [deletePlan, { isLoading, isSuccess, isError, error }] =
-    useDeletePlanMutation();
+    useDeleteProductMutation();
 
   useEffect(() => {
     if (isSuccess) {

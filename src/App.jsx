@@ -22,6 +22,9 @@ import EditCpu from "./components/Cpu/EditCpu";
 import OperatingSystem from "./pages/OperatingSystem";
 import AddOperatingSystem from "./components/OperatingSystem/AddOperatingSystem";
 import EditOperatingSystem from "./components/OperatingSystem/EditOperatingSystem";
+import Ram from "./pages/Ram";
+import AddRam from "./components/Ram/AddRam";
+import EditRam from "./components/Ram/EditRam";
 const App = () => {
   return (
     <>
@@ -46,6 +49,10 @@ const App = () => {
           <Route path="/operating-system" element={<OperatingSystem />} />
           <Route path="/operating-system/add" element={<AddOperatingSystem />} />
           <Route path="/operating-system/edit/:id" element={<EditOperatingSystem />} />
+
+          <Route path="/ram" element={<Ram />} />
+          <Route path="/ram/add" element={<AddRam />} />
+          <Route path="/ram/edit/:id" element={<EditRam />} />
 
           <Route path="/products/add" element={<AddProduct />} />
           <Route path="/products/edit/:id" element={<EditProduct />} />

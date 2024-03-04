@@ -135,6 +135,26 @@ function SideNav({ children }) {
                               </span>
                             </Link>
                           </li>
+                          <li>
+                            <Link
+                              to="/ram"
+                              className="flex items-center py-3 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100"
+                            >
+                              <span className="text-gray-700">
+                                RAM
+                              </span>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to="/products"
+                              className="flex items-center py-3 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100"
+                            >
+                              <span className="text-gray-700">
+                                Products
+                              </span>
+                            </Link>
+                          </li>
                           {/* <li>
                             <Link
                               to="/manage-add-on"

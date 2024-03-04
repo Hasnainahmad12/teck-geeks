@@ -6,21 +6,29 @@ import { IoArrowBackOutline, IoCloudUploadOutline } from "react-icons/io5";
 import { useAddPlanMutation } from "../../apis/AddBrand/AddBrandSlice";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useAddProductMutation } from "../../apis/Products/Products";
 
 function AddProduct() {
-  const [features, setFeatures] = useState([{ value: "" }]);
   const [preview, setPreview] = useState(null);
-  const [title, setTitle] = useState("");
+  const [productName, setProductName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [brands, setBrands] = useState("");
+  const [hardisk, setHardisk] = useState("");
+  const [cpu, setCpu] = useState("");
+  const [operatingSysytem, setOperatingSysytem] = useState("");
+  const [ram, setRam] = useState("");
+  const [asin, setAsin] = useState("");
+  const [stock, setStock] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [subscription, setSubscription] = useState("");
   const [status, setStatus] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [image, setImage] = useState(null);
 
   const navigate = useNavigate();
 
   const [addPlan, { isLoading, error, isSuccess, isError }] =
-    useAddPlanMutation();
+    useAddProductMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -28,18 +36,10 @@ function AddProduct() {
       navigate("/products");
     } else if (isError) {
       toast.error(error?.data?.error || "Something went wrong");
+      console.log(error);
     }
   }, [isSuccess, isError, error]);
 
-  const handleAddFeature = () => {
-    setFeatures([...features, { value: "" }]);
-  };
-
-  const handleRemoveFeature = (index) => {
-    const newFeatures = [...features];
-    newFeatures.splice(index, 1);
-    setFeatures(newFeatures);
-  };
 
   const handleSelect = (e) => {
     const file = e.target.files[0];
@@ -53,14 +53,19 @@ function AddProduct() {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("desc", description);
-    formData.append("price", price);
-    formData.append("period", subscription);
+    formData.append("productname", productName);
     formData.append("status", status);
-    features.forEach((feature, index) => {
-      formData.append(`features[]`, feature.value);
-    });
+    formData.append("categoryId", "65d6f95038a6bcfedfe2f08c");
+    formData.append("slug", slug);
+    formData.append("brands", brands);
+    formData.append("hardisk", hardisk);
+    formData.append("cpu", cpu);
+    formData.append("operatingsysytem", operatingSysytem);
+    formData.append("ram", ram);
+    formData.append("asin", asin);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("stock", stock);
     formData.append("images", image);
 
     const result = await addPlan(formData);
@@ -90,16 +95,141 @@ function AddProduct() {
               <div className="container px-4 mx-auto" />
               <div className="mb-6">
                 <label className="block mb-2 text-sm font-medium" htmlFor>
-                  Title
+                  Product Name
                 </label>
                 <input
                   className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
                   type="text"
-                  name="title"
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Enter Product Title"
+                  name="productName"
+                  onChange={(e) => setProductName(e.target.value)}
+                  placeholder="Enter Product Name"
                 />
               </div>
+              <div className="mb-6 flex flex-col">
+                <span>Status</span>
+                {/* dropdwon list for active and inactive */}
+                <select
+                  onChange={(e) => setStatus(e.target.value)}
+                  name="status"
+                  value={status}
+                  className="block max-w-md px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                >
+                  <option value={""}>Select Status</option>
+                  <option value={1}>Active</option>
+                  <option value={0}>Inactive</option>
+                </select>
+              </div>
+
+              <div className="w-full flex justify-between gap-4">
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Slug
+                  </label>
+                  <input
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                    type="text"
+                    name="slug"
+                    onChange={(e) => setSlug(e.target.value)}
+                    placeholder="Enter Product Slug"
+                  />
+                </div>
+
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Brands
+                  </label>
+                  <input
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                    type="text"
+                    name="brands"
+                    onChange={(e) => setBrands(e.target.value)}
+                    placeholder="Enter Brands"
+                  />
+                </div>
+              </div>
+
+              <div className="w-full flex justify-between gap-4">
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Hardisk
+                  </label>
+                  <input
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                    type="text"
+                    name="hardisk"
+                    onChange={(e) => setHardisk(e.target.value)}
+                    placeholder="Enter Product Hardisk"
+                  />
+                </div>
+
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Cpu
+                  </label>
+                  <input
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                    type="text"
+                    name="cpu"
+                    onChange={(e) => setCpu(e.target.value)}
+                    placeholder="Enter Cpu"
+                  />
+                </div>
+              </div>
+
+              <div className="w-full flex justify-between gap-4">
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Operating Sysytem
+                  </label>
+                  <input
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                    type="text"
+                    name="operatingsysytem"
+                    onChange={(e) => setOperatingSysytem(e.target.value)}
+                    placeholder="Enter Operating Sysytem"
+                  />
+                </div>
+
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Ram
+                  </label>
+                  <input
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                    type="text"
+                    name="ram"
+                    onChange={(e) => setRam(e.target.value)}
+                    placeholder="Enter Ram"
+                  />
+                </div>
+              </div>
+
+                <div className="mb-6">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Asin
+                  </label>
+                  <input
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                    type="text"
+                    name="asin"
+                    onChange={(e) => setAsin(e.target.value)}
+                    placeholder="Enter Asin"
+                  />
+                </div>  
+          
+              <div className="mb-6">
+                <label className="block mb-2 text-sm font-medium" htmlFor>
+                  Stock
+                </label>
+                <input
+                  className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                  type="number"
+                  name="stock"
+                  onChange={(e) => setStock(e.target.value)}
+                  placeholder="Enter Stock"
+                />
+              </div>
+
               <div className="mb-6">
                 <label className="block mb-2 text-sm font-medium " htmlFor>
                   Price
@@ -126,67 +256,7 @@ function AddProduct() {
                   </span>
                 </div>
               </div>
-              <div className="mb-6 flex flex-col">
-                <span>Status</span>
-                {/* dropdwon list for active and inactive */}
-                <select
-                  onChange={(e) => setStatus(e.target.value)}
-                  name="status"
-                  value={status}
-                  className="block max-w-md px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                >
-                  <option value={""}>Select Status</option>
-                  <option value={"active"}>Active</option>
-                  <option value={"inactive"}>Inactive</option>
-                </select>
-              </div>
-              {/* subscirpon plans  */}
-              <div className="mb-6 flex flex-col">
-                <span>Subscription Plans</span>
-                {/* dropdwon list for active and inactive */}
-                <select
-                  onChange={(e) => setSubscription(e.target.value)}
-                  name="period"
-                  value={subscription}
-                  className="block max-w-md px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                >
-                  <option value={""}>Select Subscription Plan</option>
-                  <option value={"month"}>Monthly</option>
-                  <option value={"year"}>Yearly</option>
-                </select>
-              </div>
-              {/* features */}
-              <div className="mt-6">
-                <label className="block mb-2 text-sm font-medium">
-                  Features
-                </label>
-                {features.map((feature, index) => (
-                  <div key={index} className="flex items-center mb-2">
-                    <input
-                      className="block max-w-md px-4 py-3 text-sm placeholder-gray-500 bg-white border rounded"
-                      type="text"
-                      name="features"
-                      value={feature.value}
-                      onChange={(e) => {
-                        const newFeatures = [...features];
-                        newFeatures[index].value = e.target.value;
-                        setFeatures(newFeatures);
-                      }}
-                      placeholder="Enter Product Feature"
-                    />
-                    <IoIosAddCircleOutline
-                      className="ml-2 cursor-pointer text-2xl"
-                      onClick={handleAddFeature}
-                    />
-                    {features.length > 1 && (
-                      <IoIosRemoveCircleOutline
-                        className="ml-2 cursor-pointer text-2xl"
-                        onClick={() => handleRemoveFeature(index)}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
+             
               {/* image */}
               <div className="mb-6">
                 <h6>Image </h6>
