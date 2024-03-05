@@ -22,25 +22,25 @@ function EditProduct() {
 
   const navigate = useNavigate();
 
-  const { data } = useGetPlansQuery();
+  // const { data } = useGetPlansQuery();
   const [updatePlan, { isLoading, isSuccess, isError, error }] =
     useUpdatePlanMutation();
   const { id } = useParams();
 
-  const product = data?.find((product) => product._id === id);
+  // const product = data?.find((product) => product._id === id);
 
-  useEffect(() => {
-    if (product) {
-      setTitle(product.title);
-      setDesc(product.desc);
-      setPrice(product.price);
-      setPeriod(product.period);
-      setStatus(product.status);
-      setFeatures(product.features.map((feature) => ({ value: feature })));
-      // setImage(product?.images[0]?.url);
-      setPreview(product?.images[0]?.url);
-    }
-  }, [product]);
+  // useEffect(() => {
+  //   if (product) {
+  //     setTitle(product.title);
+  //     setDesc(product.desc);
+  //     setPrice(product.price);
+  //     setPeriod(product.period);
+  //     setStatus(product.status);
+  //     setFeatures(product.features.map((feature) => ({ value: feature })));
+  //     // setImage(product?.images[0]?.url);
+  //     setPreview(product?.images[0]?.url);
+  //   }
+  // }, [product]);
 
   useEffect(() => {
     if (isSuccess) {

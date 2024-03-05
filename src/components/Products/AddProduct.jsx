@@ -3,10 +3,16 @@ import SideNav from "../../layouts/SideNav";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoArrowBackOutline, IoCloudUploadOutline } from "react-icons/io5";
-import { useAddPlanMutation } from "../../apis/AddBrand/AddBrandSlice";
+import { useAddPlanMutation, useGetPlansQuery } from "../../apis/AddBrand/AddBrandSlice";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAddProductMutation } from "../../apis/Products/Products";
+import { useGetHardDeskQuery } from "../../apis/AddHardDesk/AddHardDesk";
+import { useGetCpuQuery } from "../../apis/Cpu/Cpu";
+import { useGetOperatingSystemQuery } from "../../apis/OperatingSystem/OperatingSystem";
+import { useGetRamQuery } from "../../apis/Ram/Ram";
+import { useGetAsinQuery } from "../../apis/Asin/Asin";
+import { useGetCategoryQuery } from "../../apis/Category/Category";
 
 function AddProduct() {
   const [preview, setPreview] = useState(null);
@@ -29,6 +35,38 @@ function AddProduct() {
 
   const [addPlan, { isLoading, error, isSuccess, isError }] =
     useAddProductMutation();
+
+  const { data: brandsData, isLoading: brandsLoading, isError: brandsError } = useGetPlansQuery();
+  const { data: hardDisksData, isError: hardDisksError } = useGetHardDeskQuery();
+  const { data: cpuData, isError: cpuDataError } = useGetCpuQuery();
+  const { data: operatinSystemData, isError: operatinSystemDataError } = useGetOperatingSystemQuery();
+  const { data: ramData, isError: ramDataError } = useGetRamQuery();
+  const { data: asinData, isError: asinDataError } = useGetAsinQuery();
+  const { data: categoryData, isError: categoryDataError } = useGetCategoryQuery();
+
+  useEffect(() => {
+    if (brandsError) {
+      toast.error("Failed to fetch brands");
+    }
+    if (hardDisksError) {
+      toast.error("Failed to fetch hard disks");
+    }
+    if (cpuDataError) {
+      toast.error("Failed to fetch cpu");
+    }
+    if (operatinSystemDataError) {
+      toast.error("Failed to fetch operating system");
+    }
+    if (ramDataError) {
+      toast.error("Failed to fetch ram");
+    }
+    if (asinDataError) {
+      toast.error("Failed to fetch asin");
+    }
+    if (categoryDataError) {
+      toast.error("Failed to fetch category");
+    }
+  }, [brandsError, hardDisksError, cpuDataError, operatinSystemDataError, ramDataError, asinDataError, categoryDataError]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -55,7 +93,7 @@ function AddProduct() {
     const formData = new FormData();
     formData.append("productname", productName);
     formData.append("status", status);
-    formData.append("categoryId", "65d6f95038a6bcfedfe2f08c");
+    formData.append("categoryId", categoryId);
     formData.append("slug", slug);
     formData.append("brands", brands);
     formData.append("hardisk", hardisk);
@@ -66,7 +104,7 @@ function AddProduct() {
     formData.append("description", description);
     formData.append("price", price);
     formData.append("stock", stock);
-    formData.append("images", image);
+    formData.append("image", image);
 
     const result = await addPlan(formData);
   };
@@ -135,16 +173,24 @@ function AddProduct() {
                 </div>
 
                 <div className="mb-6 w-full">
-                  <label className="block mb-2 text-sm font-medium" htmlFor>
-                    Brands
-                  </label>
-                  <input
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                    type="text"
-                    name="brands"
-                    onChange={(e) => setBrands(e.target.value)}
-                    placeholder="Enter Brands"
-                  />
+                  <div className="mb-6 w-full">
+                    <label className="block mb-2 text-sm font-medium" htmlFor="brands">
+                      Brands
+                    </label>
+                    <select
+                      className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                      name="brands"
+                      onChange={(e) => setBrands(e.target.value)}
+                      value={brands}
+                    >
+                      <option value="">Select Brand</option>
+                      {brandsData?.data?.map((brand) => (
+                        <option key={brand.id} value={brand?.brandname}>
+                          {brand?.brandname}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -153,26 +199,38 @@ function AddProduct() {
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Hardisk
                   </label>
-                  <input
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                    type="text"
+                  <select
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                     name="hardisk"
                     onChange={(e) => setHardisk(e.target.value)}
-                    placeholder="Enter Product Hardisk"
-                  />
+                    value={hardisk}
+                  >
+                    <option value="">Select Hardisk</option>
+                    {hardDisksData?.data?.map((hardDisk) => (
+                      <option key={hardDisk.id} value={hardDisk?.hardiskname}>
+                        {hardDisk?.hardiskname}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="mb-6 w-full">
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Cpu
                   </label>
-                  <input
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                    type="text"
+                  <select
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                     name="cpu"
                     onChange={(e) => setCpu(e.target.value)}
-                    placeholder="Enter Cpu"
-                  />
+                    value={cpu}
+                  >
+                    <option value="">Select Cpu</option>
+                    {cpuData?.data?.map((cpuItem) => (
+                      <option key={cpuItem.id} value={cpuItem?.cpuname}>
+                        {cpuItem?.cpuname}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
@@ -181,41 +239,80 @@ function AddProduct() {
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Operating Sysytem
                   </label>
-                  <input
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                    type="text"
+                  <select
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                     name="operatingsysytem"
                     onChange={(e) => setOperatingSysytem(e.target.value)}
-                    placeholder="Enter Operating Sysytem"
-                  />
+                    value={operatingSysytem}
+                  >
+                    <option value="">Select Operating System</option>
+                    {operatinSystemData?.data?.map((os) => (
+                      <option key={os.id} value={os?.operatingname}>
+                        {os?.operatingname}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="mb-6 w-full">
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Ram
                   </label>
-                  <input
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                    type="text"
+                  <select
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                     name="ram"
                     onChange={(e) => setRam(e.target.value)}
-                    placeholder="Enter Ram"
-                  />
+                    value={ram}
+                  >
+                    <option value="">Select Ram</option>
+                    {ramData?.data?.map((ramItem) => (
+                      <option key={ramItem.id} value={ramItem?.ramname}>
+                        {ramItem?.ramname}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
-                <div className="mb-6">
+              <div className="w-full flex justify-between gap-4">
+                <div className="mb-6 w-full">
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Asin
                   </label>
-                  <input
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                    type="text"
+                  <select
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                     name="asin"
                     onChange={(e) => setAsin(e.target.value)}
-                    placeholder="Enter Asin"
-                  />
-                </div>  
+                    value={asin}
+                  >
+                    <option value="">Select Asin</option>
+                    {asinData?.data?.map((asinItem) => (
+                      <option key={asinItem.id} value={asinItem?.asinname}>
+                        {asinItem?.asinname}
+                      </option>
+                    ))}
+                  </select>
+                </div> 
+
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Category 
+                  </label>
+                  <select
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                    name="asin"
+                    onChange={(e) => setCategoryId(e.target.value)}
+                    value={categoryId}
+                  >
+                    <option value="">Select Category</option>
+                    {categoryData?.data?.map((categoryItem) => (
+                      <option key={categoryItem.id} value={categoryItem?._id}>
+                        {categoryItem?.categoryname}
+                      </option>
+                    ))}
+                  </select>
+                </div> 
+              </div>
           
               <div className="mb-6">
                 <label className="block mb-2 text-sm font-medium" htmlFor>
