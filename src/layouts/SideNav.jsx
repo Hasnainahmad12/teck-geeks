@@ -62,7 +62,7 @@ function SideNav({ children }) {
                 <ul className="mb-8 text-sm ">
                   <li>
                     <Link
-                      to="/"
+                      to="/dashboard"
                       className="flex items-center px-6 py-4 text-gray-700 group hover:text-gray-600 hover:bg-gray-100"
                     >
                       <span

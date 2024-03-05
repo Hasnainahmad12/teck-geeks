@@ -25,7 +25,7 @@ function DeleteProductModal({ onClose, deleteData }) {
       <div className="justify-center flex-1 max-w-6xl py-4 mx-auto text-center lg:py-10 ">
         <div className>
           <div
-            className="absolute top-0  z-[999] left-0 flex items-center justify-center w-full h-screen"
+            className="fixed top-0  z-[999] left-0 flex items-center justify-center w-full h-screen"
             style={{ backgroundColor: "rgba(0,0,0,.5)" }}
           >
             <div className="relative mx-4 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-lg sm:w-full">
