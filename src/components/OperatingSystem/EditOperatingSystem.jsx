@@ -12,6 +12,7 @@ import {
 } from "../../apis/AddBrand/AddBrandSlice";
 import toast from "react-hot-toast";
 import { useUpdateOperatingSystemMutation } from "../../apis/OperatingSystem/OperatingSystem";
+import axios from "axios";
 
 function EditOperatingSystem() {
   const [operatingSystemName, setOperatingSystemName] = useState("");
@@ -20,18 +21,24 @@ function EditOperatingSystem() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data } = useGetPlansQuery();
   const [updatePlan, { isLoading, isSuccess, isError, error }] =
     useUpdateOperatingSystemMutation();
-  const Data = data?.data?.filter((plan) => plan._id === id);
-
-  useEffect(() => {
-    if (Data?.data?.length > 0) {
-      const planData = Data[0];
-      setOperatingSystemName(planData.operatingname);
-      setStatus(planData.status);
-    }
-  }, [data]);
+ 
+    useEffect(() => {
+      const handleUpdateData = async () => {
+        try {
+          const res = await axios.get(`https://fierce-veil-elk.cyclic.app/get-operatingbyid/${id}`);
+          console.log(res?.data);
+          setOperatingSystemName(res?.data?.data?.operatingname || "");
+          setStatus(res?.data?.data?.status.toString() || "");
+        } 
+        catch (error) {
+          toast.error(error?.data?.error || "Error fetching Operating System data");
+        }
+      };
+    
+      handleUpdateData();
+    }, [id]);
 
   useEffect(() => {
     if (isSuccess) {

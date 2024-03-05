@@ -12,6 +12,7 @@ import {
 } from "../../apis/AddBrand/AddBrandSlice";
 import toast from "react-hot-toast";
 import { useUpdateHardDeskMutation } from "../../apis/AddHardDesk/AddHardDesk";
+import axios from "axios";
 
 function EditHardDesk() {
   const [hardiskName, setHardiskName] = useState("");
@@ -20,19 +21,25 @@ function EditHardDesk() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data } = useGetPlansQuery();
   const [updatePlan, { isLoading, isSuccess, isError, error }] =
     useUpdateHardDeskMutation();
-  const Data = data?.data?.filter((plan) => plan._id === id);
-
-  useEffect(() => {
-    if (Data?.data?.length > 0) {
-      const planData = Data[0];
-      setHardiskName(planData.hardiskname);
-      setStatus(planData.status);
-    }
-  }, [data]);
-
+ 
+    useEffect(() => {
+      const handleUpdateData = async () => {
+        try {
+          const res = await axios.get(`https://fierce-veil-elk.cyclic.app/get-hardiskbyid/${id}`);
+          console.log(res?.data);
+          setHardiskName(res?.data?.data?.hardiskname || "");
+          setStatus(res?.data?.data?.status.toString() || "");
+        } 
+        catch (error) {
+          toast.error(error?.data?.error || "Error fetching Hardisk data");
+        }
+      };
+      
+      handleUpdateData();
+    }, [id]);
+    
   useEffect(() => {
     if (isSuccess) {
       toast.success("Hardisk updated successfully");

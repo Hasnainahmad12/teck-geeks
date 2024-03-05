@@ -53,7 +53,15 @@ function HardDesk() {
                         {plan.hardiskname || "N/A"}
                       </td>
                       <td className="px-6 text-sm font-medium">
-                        {plan.status === 0 ? "Inactive" : plan.status === 1 ? "Active" : "N/A"}
+                        <span
+                         className={`inline-block px-2 py-1 ${
+                          plan.status === 1
+                            ? "text-green-700 bg-green-100"
+                            : "text-red-700 bg-red-100"
+                          } rounded-md`}
+                        >
+                          {plan.status === 1 ? "Active" : "Inactive"}
+                        </span>
                       </td>
                       <td className="px-6 text-sm font-medium">
                         {plan.createdAt || "N/A"}

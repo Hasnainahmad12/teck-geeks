@@ -11,6 +11,7 @@ import {
   useUpdatePlanMutation,
 } from "../../apis/AddBrand/AddBrandSlice";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 function EditPackage() {
   const [brandName, setBrandName] = useState("");
@@ -19,18 +20,25 @@ function EditPackage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data } = useGetPlansQuery();
   const [updatePlan, { isLoading, isSuccess, isError, error }] =
     useUpdatePlanMutation();
-  const Data = data?.data?.filter((plan) => plan._id === id);
-
+  
   useEffect(() => {
-    if (Data?.data?.length > 0) {
-      const planData = Data[0];
-      setBrandName(planData.brandname);
-      setStatus(planData.status);
-    }
-  }, [data]);
+    const handleUpdateData = async () => {
+      try {
+        const res = await axios.get(`https://fierce-veil-elk.cyclic.app/get-brandbyid/${id}`);
+        console.log(res?.data);
+        setBrandName(res?.data?.data?.brandname || "");
+        setStatus(res?.data?.data?.status.toString() || "");
+      } 
+      catch (error) {
+        toast.error(error?.data?.error || "Error fetching Brand data");
+      }
+    };
+    
+    handleUpdateData();
+  }, [id]);
+  
 
   useEffect(() => {
     if (isSuccess) {
@@ -57,7 +65,7 @@ function EditPackage() {
           <div className="p-6 ~bg-white rounded-md shadow bg-white">
             <div className="flex justify-between  items-center">
               <h2 className="mb-6 text-xl  font-medium leading-6 text-gray-900 ">
-                Edit Package
+                Edit Brand
               </h2>
               {/* back button */}
               <div className="flex items-center mb-6">
@@ -127,7 +135,7 @@ function EditPackage() {
                         ></path>
                       </svg>
                     ) : (
-                      <span>Update Package</span>
+                      <span>Update Brand</span>
                     )}
                   </button>
                 </div>

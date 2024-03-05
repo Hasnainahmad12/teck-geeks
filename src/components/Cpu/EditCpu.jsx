@@ -12,6 +12,7 @@ import {
 } from "../../apis/AddBrand/AddBrandSlice";
 import toast from "react-hot-toast";
 import { useUpdateCpuMutation } from "../../apis/Cpu/Cpu";
+import axios from "axios";
 
 function EditCpu() {
   const [cpuName, setCpuName] = useState("");
@@ -20,18 +21,24 @@ function EditCpu() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data } = useGetPlansQuery();
   const [updatePlan, { isLoading, isSuccess, isError, error }] =
     useUpdateCpuMutation();
-  const Data = data?.data?.filter((plan) => plan._id === id);
-
+  
   useEffect(() => {
-    if (Data?.data?.length > 0) {
-      const planData = Data[0];
-      setCpuName(planData.cpuname);
-      setStatus(planData.status);
-    }
-  }, [data]);
+    const handleUpdateData = async () => {
+      try {
+        const res = await axios.get(`https://fierce-veil-elk.cyclic.app/get-cpubyid/${id}`);
+        // console.log(res?.data);
+        setCpuName(res?.data?.data?.cpuname || "");
+        setStatus(res?.data?.data?.status.toString() || "");
+      } 
+      catch (error) {
+        toast.error(error?.data?.error || "Error fetching Cpu data");
+      }
+    };
+      
+    handleUpdateData();
+  }, [id]);
 
   useEffect(() => {
     if (isSuccess) {
