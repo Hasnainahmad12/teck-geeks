@@ -9,28 +9,29 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 
 // api
-import { useUpdateRamMutation } from "../../apis/Ram/Ram";
+import { useUpdateAsinMutation } from "../../apis/Asin/Asin";
+
+//axios api calling
 import axios from "axios";
 
-function EditRam() {
+function EditAsin() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [ramName, setRamName] = useState("");
+  const [asinName, setAsinName] = useState("");
   const [status, setStatus] = useState("");
 
-  const [updateRam, { isLoading, isSuccess, isError, error }] = useUpdateRamMutation();
+  const [updateRam, { isLoading, isSuccess, isError, error }] = useUpdateAsinMutation();
 
   useEffect(() => {
     const handleUpdateData = async () => {
       try {
-        const res = await axios.get(`https://fierce-veil-elk.cyclic.app/get-rambyid/${id}`);
-        console.log(res?.data);
-        setRamName(res?.data?.data?.ramname || "");
+        const res = await axios.get(`https://fierce-veil-elk.cyclic.app/get-asinbyid/${id}`);
+        setAsinName(res?.data?.data?.asinname || "");
         setStatus(res?.data?.data?.status.toString() || "");
       } 
       catch (error) {
-        toast.error(error?.data?.error || "Error fetching RAM data");
+        toast.error(error?.data?.error || "Error fetching Asin data");
       }
     };
   
@@ -40,9 +41,9 @@ function EditRam() {
 
   const handleUpdatePackage = async () => {
     try {
-      await updateRam({ id, data: { ramname: ramName, status: status } });
-      toast.success("Ram updated successfully");
-      navigate("/ram");
+      await updateRam({ id, data: { asinname: asinName, status: status } });
+      toast.success("Asin updated successfully");
+      navigate("/asin");
     } catch (error) {
       toast.error(error?.data?.error || "Error updating");
     }
@@ -67,15 +68,15 @@ function EditRam() {
             <div>
               <div className="mb-6">
                 <label className="block mb-2 text-sm font-medium" htmlFor="ramname">
-                  Ram
+                    Asin
                 </label>
                 <input
                   className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                   type="text"
                   id="ramname"
-                  value={ramName}
-                  onChange={(e) => setRamName(e.target.value)}
-                  placeholder="e.g 4GB, 8GB, 16GB etc."
+                  value={asinName}
+                  onChange={(e) => setAsinName(e.target.value)}
+                  placeholder="Enter Asin Name"
                 />
               </div>
               <div className="mb-6 flex flex-col">
@@ -102,7 +103,7 @@ function EditRam() {
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                       </svg>
                     ) : (
-                      <span>Update Ram</span>
+                      <span>Update Asin</span>
                     )}
                   </button>
                 </div>
@@ -115,4 +116,4 @@ function EditRam() {
   );
 }
 
-export default EditRam;
+export default EditAsin;

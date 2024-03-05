@@ -147,6 +147,26 @@ function SideNav({ children }) {
                           </li>
                           <li>
                             <Link
+                              to="/asin"
+                              className="flex items-center py-3 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100"
+                            >
+                              <span className="text-gray-700">
+                                Asin
+                              </span>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to="/category"
+                              className="flex items-center py-3 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100"
+                            >
+                              <span className="text-gray-700">
+                                Category
+                              </span>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
                               to="/products"
                               className="flex items-center py-3 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100"
                             >

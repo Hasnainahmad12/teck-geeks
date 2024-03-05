@@ -18,12 +18,6 @@ export const RamSlice = ApiSlice.injectEndpoints({
             }),
             providesTags: ["Ram"],
         }),
-        getRamById: builder.query({
-            query: (id) => ({
-                url: `/get-rambyid/${id}`,
-                method: "GET",
-            }),
-        }),
         updateRam: builder.mutation({
             query: (args) => {
                 const { id, data } = args;
@@ -50,7 +44,6 @@ export const RamSlice = ApiSlice.injectEndpoints({
 export const {
     useAddRamMutation,
     useGetRamQuery,
-    useGetRamByIdQuery,
     useUpdateRamMutation,
     useDeleteRamMutation,
 } = RamSlice;

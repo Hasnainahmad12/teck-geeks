@@ -25,6 +25,12 @@ import EditOperatingSystem from "./components/OperatingSystem/EditOperatingSyste
 import Ram from "./pages/Ram";
 import AddRam from "./components/Ram/AddRam";
 import EditRam from "./components/Ram/EditRam";
+import Asin from "./pages/Asin";
+import AddAsin from "./components/Asin/AddAsin";
+import EditAsin from "./components/Asin/EditAsin";
+import Category from "./pages/Category";
+import AddCategory from "./components/Category/AddCategory";
+import EditCategory from "./components/Category/EditCategory";
 const App = () => {
   return (
     <>
@@ -53,6 +59,14 @@ const App = () => {
           <Route path="/ram" element={<Ram />} />
           <Route path="/ram/add" element={<AddRam />} />
           <Route path="/ram/edit/:id" element={<EditRam />} />
+
+          <Route path="/asin" element={<Asin />} />
+          <Route path="/asin/add" element={<AddAsin />} />
+          <Route path="/asin/edit/:id" element={<EditAsin />} />
+
+          <Route path="/category" element={<Category />} />
+          <Route path="/category/add" element={<AddCategory />} />
+          <Route path="/category/edit/:id" element={<EditCategory />} />
 
           <Route path="/products/add" element={<AddProduct />} />
           <Route path="/products/edit/:id" element={<EditProduct />} />
