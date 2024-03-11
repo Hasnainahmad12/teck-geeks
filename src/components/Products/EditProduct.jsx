@@ -9,38 +9,100 @@ import {
   useUpdatePlanMutation,
 } from "../../apis/AddBrand/AddBrandSlice";
 import toast from "react-hot-toast";
+import { useGetHardDeskQuery } from "../../apis/AddHardDesk/AddHardDesk";
+import { useGetCpuQuery } from "../../apis/Cpu/Cpu";
+import { useGetOperatingSystemQuery } from "../../apis/OperatingSystem/OperatingSystem";
+import { useGetRamQuery } from "../../apis/Ram/Ram";
+import { useGetAsinQuery } from "../../apis/Asin/Asin";
+import { useGetCategoryQuery } from "../../apis/Category/Category";
+import axios from "axios";
+import { useUpdateProductMutation } from "../../apis/Products/Products";
 
 function EditProduct() {
-  const [features, setFeatures] = useState([{ value: "" }]);
   const [preview, setPreview] = useState(null);
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
+  const [productName, setProductName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [brands, setBrands] = useState("");
+  const [hardisk, setHardisk] = useState("");
+  const [cpu, setCpu] = useState("");
+  const [operatingSysytem, setOperatingSysytem] = useState("");
+  const [ram, setRam] = useState("");
+  const [asin, setAsin] = useState("");
+  const [stock, setStock] = useState("");
+  const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [period, setPeriod] = useState("");
   const [status, setStatus] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [image, setImage] = useState(null);
 
   const navigate = useNavigate();
 
   // const { data } = useGetPlansQuery();
   const [updatePlan, { isLoading, isSuccess, isError, error }] =
-    useUpdatePlanMutation();
+    useUpdateProductMutation();
   const { id } = useParams();
 
-  // const product = data?.find((product) => product._id === id);
+  const { data: brandsData, isLoading: brandsLoading, isError: brandsError } = useGetPlansQuery();
+  const { data: hardDisksData, isError: hardDisksError } = useGetHardDeskQuery();
+  const { data: cpuData, isError: cpuDataError } = useGetCpuQuery();
+  const { data: operatinSystemData, isError: operatinSystemDataError } = useGetOperatingSystemQuery();
+  const { data: ramData, isError: ramDataError } = useGetRamQuery();
+  const { data: asinData, isError: asinDataError } = useGetAsinQuery();
+  const { data: categoryData, isError: categoryDataError } = useGetCategoryQuery();
 
-  // useEffect(() => {
-  //   if (product) {
-  //     setTitle(product.title);
-  //     setDesc(product.desc);
-  //     setPrice(product.price);
-  //     setPeriod(product.period);
-  //     setStatus(product.status);
-  //     setFeatures(product.features.map((feature) => ({ value: feature })));
-  //     // setImage(product?.images[0]?.url);
-  //     setPreview(product?.images[0]?.url);
-  //   }
-  // }, [product]);
+  useEffect(() => {
+    const handleUpdateData = async () => {
+      try {
+        const res = await axios.get(`https://fierce-veil-elk.cyclic.app/products/${id}`);
+        console.log(res?.data);
+        setProductName(res?.data?.data?.productname || "");
+        setSlug(res?.data?.data?.slug || "");
+        setBrands(res?.data?.data?.brands || "");
+        setHardisk(res?.data?.data?.hardisk || "");
+        setCpu(res?.data?.data?.cpu || "");
+        setOperatingSysytem(res?.data?.data?.operatingsysytem || "");
+        setRam(res?.data?.data?.ram || "");
+        setAsin(res?.data?.data?.asin || "");
+        setStock(res?.data?.data?.stock || "");
+        setDescription(res?.data?.data?.description || "");
+        setPrice(res?.data?.data?.price || "");
+        setStatus(res?.data?.data?.status.toString() || "");
+        setCategoryId(res?.data?.data?.categoryId || "");
+        // setImage(res?.data?.data?.image || "");
+        setPreview(res?.data?.data?.image || "");
+      } 
+      catch (error) {
+        toast.error(error?.data?.error || "Error fetching Product data");
+      }
+    };
+      
+    handleUpdateData();
+  }, [id]);
+
+  useEffect(() => {
+    if (brandsError) {
+      toast.error("Failed to fetch brands");
+    }
+    if (hardDisksError) {
+      toast.error("Failed to fetch hard disks");
+    }
+    if (cpuDataError) {
+      toast.error("Failed to fetch cpu");
+    }
+    if (operatinSystemDataError) {
+      toast.error("Failed to fetch operating system");
+    }
+    if (ramDataError) {
+      toast.error("Failed to fetch ram");
+    }
+    if (asinDataError) {
+      toast.error("Failed to fetch asin");
+    }
+    if (categoryDataError) {
+      toast.error("Failed to fetch category");
+    }
+  }, [brandsError, hardDisksError, cpuDataError, operatinSystemDataError, ramDataError, asinDataError, categoryDataError]);
+
 
   useEffect(() => {
     if (isSuccess) {
@@ -51,16 +113,7 @@ function EditProduct() {
     }
   }, [isError, isSuccess, error]);
 
-  const handleAddFeature = () => {
-    setFeatures([...features, { value: "" }]);
-  };
-
-  const handleRemoveFeature = (index) => {
-    const newFeatures = [...features];
-    newFeatures.splice(index, 1);
-    setFeatures(newFeatures);
-  };
-
+  
   const handleSelect = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -73,14 +126,19 @@ function EditProduct() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("desc", desc);
-    formData.append("price", price);
-    formData.append("period", period);
+    formData.append("productname", productName);
     formData.append("status", status);
-    features.forEach((feature) => {
-      formData.append("features[]", feature.value);
-    });
+    formData.append("categoryId", categoryId);
+    formData.append("slug", slug);
+    formData.append("brands", brands);
+    formData.append("hardisk", hardisk);
+    formData.append("cpu", cpu);
+    formData.append("operatingsysytem", operatingSysytem);
+    formData.append("ram", ram);
+    formData.append("asin", asin);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("stock", stock);
     if (image instanceof File) {
       formData.append("image", image);
     }
@@ -119,17 +177,189 @@ function EditProduct() {
               <div className="container px-4 mx-auto" />
               <div className="mb-6">
                 <label className="block mb-2 text-sm font-medium" htmlFor>
-                  Title
+                  Product Name
                 </label>
                 <input
                   className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
                   type="text"
-                  name
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Enter Product Title"
+                  name="productName"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  placeholder="Enter Product Name"
                 />
               </div>
+              <div className="mb-6 flex flex-col">
+                <span>Status</span>
+                {/* dropdwon list for active and inactive */}
+                <select
+                  onChange={(e) => setStatus(e.target.value)}
+                  name="status"
+                  value={status}
+                  className="block max-w-md px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                >
+                  <option value={""}>Select Status</option>
+                  <option value={1}>Active</option>
+                  <option value={0}>Inactive</option>
+                </select>
+              </div>
+
+
+              <div className="w-full flex justify-between gap-4">
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Slug
+                  </label>
+                  <input
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                    type="text"
+                    name="slug"
+                    value={slug}
+                    onChange={(e) => setSlug(e.target.value)}
+                    placeholder="Enter Product Slug"
+                  />
+                </div>
+
+                <div className="mb-6 w-full">
+                  <div className="mb-6 w-full">
+                    <label className="block mb-2 text-sm font-medium" htmlFor="brands">
+                      Brands
+                    </label>
+                    <select
+                      className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                      name="brands"
+                      onChange={(e) => setBrands(e.target.value)}
+                      value={brands}
+                    >
+                      <option value="">Select Brand</option>
+                      {brandsData?.data?.map((brand) => (
+                        <option key={brand.id} value={brand?.brandname}>
+                          {brand?.brandname}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full flex justify-between gap-4">
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Hardisk
+                  </label>
+                  <select
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                    name="hardisk"
+                    onChange={(e) => setHardisk(e.target.value)}
+                    value={hardisk}
+                  >
+                    <option value="">Select Hardisk</option>
+                    {hardDisksData?.data?.map((hardDisk) => (
+                      <option key={hardDisk.id} value={hardDisk?.hardiskname}>
+                        {hardDisk?.hardiskname}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Cpu
+                  </label>
+                  <input className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                      type="text"
+                      name="cpu"
+                      onChange={(e) => setCpu(e.target.value)}
+                      placeholder="Enter Cpu"
+                      value={cpu}
+                    />
+                </div>
+              </div>
+
+              <div className="w-full flex justify-between gap-4">
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Operating Sysytem
+                  </label>
+                  <input className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                      type="text"
+                      name="operatingSystem"
+                      onChange={(e) => setOperatingSysytem(e.target.value)}
+                      placeholder="
+                      Enter Operating System"
+                      value={operatingSysytem}
+                    />
+                </div>
+
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Ram
+                  </label>
+                  <select
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                    name="ram"
+                    onChange={(e) => setRam(e.target.value)}
+                    value={ram}
+                  >
+                    <option value="">Select Ram</option>
+                    {ramData?.data?.map((ramItem) => (
+                      <option key={ramItem.id} value={ramItem?.ramname}>
+                        {ramItem?.ramname}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="w-full flex justify-between gap-4">
+                <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Asin
+                  </label>
+                  <input className="
+                    block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                      type="text"
+                      name="asin"
+                      onChange={(e) => setAsin(e.target.value)}
+                      placeholder="Enter Asin"
+                      value={asin}
+                      />
+                      
+                 </div>
+
+                 <div className="mb-6 w-full">
+                  <label className="block mb-2 text-sm font-medium" htmlFor>
+                    Category 
+                  </label>
+                  <select
+                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                    name="asin"
+                    onChange={(e) => setCategoryId(e.target.value)}
+                    value={categoryId}
+                  >
+                    <option value="">Select Category</option>
+                    {categoryData?.data?.map((categoryItem) => (
+                      <option key={categoryItem.id} value={categoryItem?.categoryId}>
+                        {categoryItem?.categoryname}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div> 
+
+              <div className="mb-6">
+                <label className="block mb-2 text-sm font-medium" htmlFor>
+                  Stock
+                </label>
+                <input
+                  className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                  type="number"
+                  name="stock"
+                  value={stock}
+                  onChange={(e) => setStock(e.target.value)}
+                  placeholder="Enter Stock"
+                />
+              </div>
+
               <div className="mb-6">
                 <label className="block mb-2 text-sm font-medium " htmlFor>
                   Price
@@ -138,11 +368,11 @@ function EditProduct() {
                   <input
                     type="text"
                     name="price"
+                    value={price}
                     className="block max-w-md px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                     placeholder="0"
                     pattern="\d*"
                     inputMode="numeric"
-                    value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     onInput={(e) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, "");
@@ -157,62 +387,7 @@ function EditProduct() {
                   </span>
                 </div>
               </div>
-              <div className="mb-6 flex flex-col">
-                <span>Status</span>
-                {/* dropdwon list for active and inactive */}
-                <select
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  className="block max-w-md px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                >
-                  <option value={"active"}>Active</option>
-                  <option value={"inactive"}>Inactive</option>
-                </select>
-              </div>
-              {/* subscirpon plans  */}
-              <div className="mb-6 flex flex-col">
-                <span>Subscription Plans</span>
-                {/* dropdwon list for active and inactive */}
-                <select
-                  value={period}
-                  onChange={(e) => setPeriod(e.target.value)}
-                  className="block max-w-md px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                >
-                  <option value={"month"}>Monthly</option>
-                  <option value={"year"}>Yearly</option>
-                </select>
-              </div>
-              {/* features */}
-              <div className="mt-6">
-                <label className="block mb-2 text-sm font-medium">
-                  Features
-                </label>
-                {features.map((feature, index) => (
-                  <div key={index} className="flex items-center mb-2">
-                    <input
-                      className="block max-w-md px-4 py-3 text-sm placeholder-gray-500 bg-white border rounded"
-                      type="text"
-                      value={feature.value}
-                      onChange={(e) => {
-                        const newFeatures = [...features];
-                        newFeatures[index].value = e.target.value;
-                        setFeatures(newFeatures);
-                      }}
-                      placeholder="Enter Product Feature"
-                    />
-                    <IoIosAddCircleOutline
-                      className="ml-2 cursor-pointer text-2xl"
-                      onClick={handleAddFeature}
-                    />
-                    {features.length > 1 && (
-                      <IoIosRemoveCircleOutline
-                        className="ml-2 cursor-pointer text-2xl"
-                        onClick={() => handleRemoveFeature(index)}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
+
               {/* image */}
               <div className="mb-6">
                 <h6>Image </h6>
@@ -241,11 +416,12 @@ function EditProduct() {
                 </label>
                 <textarea
                   className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
-                  name="field-name"
+                  name="description"
                   rows={5}
                   placeholder="Write something..."
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
+                  defaultValue={""}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
 

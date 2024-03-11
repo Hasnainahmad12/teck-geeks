@@ -110,9 +110,9 @@ function Products() {
                             {product.status === 1 ? "Active" : "Inactive"}
                           </span>
                         </td>
-                        <td className="px-6 text-sm font-medium">
+                        <td className="px-6 flex text-sm font-medium">
                           <Link
-                            // to={`/products/edit/${product._id}`}
+                            to={`/products/edit/${product._id}`}
                             className="px-4 py-1 font-medium text-blue-500 border border-blue-500 rounded-md hover:text-gray-100 hover:bg-blue-500"
                           >
                             Edit

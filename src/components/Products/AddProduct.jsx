@@ -218,7 +218,15 @@ function AddProduct() {
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Cpu
                   </label>
-                  <select
+                  <input className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                      type="text"
+                      name="cpu"
+                      onChange={(e) => setCpu(e.target.value)}
+                      placeholder="Enter Cpu"
+                      value={cpu}
+                    />
+
+                  {/* <select
                     className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                     name="cpu"
                     onChange={(e) => setCpu(e.target.value)}
@@ -230,7 +238,7 @@ function AddProduct() {
                         {cpuItem?.cpuname}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
                 </div>
               </div>
 
@@ -279,7 +287,16 @@ function AddProduct() {
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Asin
                   </label>
-                  <select
+                  <input className="
+                    block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                      type="text"
+                      name="asin"
+                      onChange={(e) => setAsin(e.target.value)}
+                      placeholder="Enter Asin"
+                      value={asin}
+                      />
+                      
+                  {/* <select
                     className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                     name="asin"
                     onChange={(e) => setAsin(e.target.value)}
@@ -291,7 +308,7 @@ function AddProduct() {
                         {asinItem?.asinname}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
                 </div> 
 
                 <div className="mb-6 w-full">

@@ -23,7 +23,7 @@ export const ProductsSlice = ApiSlice.injectEndpoints({
             query: (args) => {
                 const { id, data } = args;
                 return {
-                    url: `/update-brand/${id}`,
+                    url: `/products/${id}`,
                     method: "PUT",
                     body: data,
                 };
