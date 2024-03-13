@@ -72,7 +72,7 @@ function AddThumbnail() {
     if (imageOptional3) formData.append("thumbnails", imageOptional3);
   
     try {
-      await updatePlan(id, formData);
+      await updatePlan({ id, data: formData });
     } catch (error) {
       console.error("Error updating thumbnails:", error);
       // Handle error
