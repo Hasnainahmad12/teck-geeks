@@ -7,14 +7,25 @@ import {
 import SideNav from "../layouts/SideNav";
 import { MdCancelPresentation } from "react-icons/md";
 import { FaBoxes } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { useGetHistoryQuery } from "../apis/History/HistorySlice";
 import toast from "react-hot-toast";
+import { useGetPlansQuery } from "../apis/AddBrand/AddBrandSlice";
+import { useGetProductQuery } from "../apis/Products/Products";
+import { useGetCategoryQuery } from "../apis/Category/Category";
+import { useGetAsinQuery } from "../apis/Asin/Asin";
+import { useGetCpuQuery } from "../apis/Cpu/Cpu";
+import { useGetHardDeskQuery } from "../apis/AddHardDesk/AddHardDesk";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { data, error, isLoading } = useGetHistoryQuery();
+  const { data: brandsData, error: plansError } = useGetPlansQuery();
+  const { data: productData, error: productError } = useGetProductQuery();
+  const { data: categoryData, error: categoryError } = useGetCategoryQuery();
+  const { data: asinData, error: asinError } = useGetAsinQuery();
+  const { data: cpuData, error: cpuError } = useGetCpuQuery();
+  const { data: hardiskData, error: hardiskError } = useGetHardDeskQuery();
+  
 
   return (
     <SideNav>
@@ -37,7 +48,7 @@ function Dashboard() {
             </div>
             <div>
               <p className="mb-2 text-gray-700">Total Brands</p>
-              <h2 className="text-2xl font-bold text-gray-700">$1,25,220</h2>
+              <h2 className="text-2xl font-bold text-gray-700">{brandsData?.data.length > 0 ? `(${brandsData?.data.length})` : ''}</h2>
             </div>
           </div>
           <div className="flex items-center p-4 rounded-md shadow bg-gray-50">
@@ -47,8 +58,8 @@ function Dashboard() {
               </span>
             </div>
             <div>
-              <p className="mb-2 text-gray-700">Total Users</p>
-              <h2 className="text-2xl font-bold text-gray-700">100</h2>
+              <p className="mb-2 text-gray-700">Total Products</p>
+              <h2 className="text-2xl font-bold text-gray-700">{productData?.data.length > 0 ? `(${productData?.data.length})` : ''}</h2>
             </div>
           </div>
           <div className="flex items-center p-4 rounded-md shadow bg-gray-50">
@@ -58,8 +69,8 @@ function Dashboard() {
               </span>
             </div>
             <div>
-              <p className="mb-2 text-gray-700">Active Subscription</p>
-              <h2 className="text-2xl font-bold text-gray-700">56</h2>
+              <p className="mb-2 text-gray-700">Total Categories</p>
+              <h2 className="text-2xl font-bold text-gray-700">{categoryData?.data.length > 0 ? `(${categoryData?.data.length})` : ''}</h2>
             </div>
           </div>
         </div>
@@ -72,8 +83,8 @@ function Dashboard() {
               </span>
             </div>
             <div>
-              <p className="mb-2 text-gray-700">Inactive Subscription</p>
-              <h2 className="text-2xl font-bold text-gray-700">99</h2>
+              <p className="mb-2 text-gray-700">Total Asin</p>
+              <h2 className="text-2xl font-bold text-gray-700">{asinData?.data.length > 0 ? `(${asinData?.data.length})` : ''}</h2>
             </div>
           </div>
           <div className="flex items-center p-4 rounded-md shadow bg-gray-50">
@@ -83,8 +94,8 @@ function Dashboard() {
               </span>
             </div>
             <div>
-              <p className="mb-2 text-gray-700">Cancelled Subscription</p>
-              <h2 className="text-2xl font-bold text-gray-700">100</h2>
+              <p className="mb-2 text-gray-700">Total Cpu</p>
+              <h2 className="text-2xl font-bold text-gray-700">{cpuData?.data.length > 0 ? `(${cpuData?.data.length})` : ''}</h2>
             </div>
           </div>
           <div className="flex items-center p-4 rounded-md shadow bg-gray-50">
@@ -94,8 +105,8 @@ function Dashboard() {
               </span>
             </div>
             <div>
-              <p className="mb-2 text-gray-700">Total Products</p>
-              <h2 className="text-2xl font-bold text-gray-700">56</h2>
+              <p className="mb-2 text-gray-700">Total Hard Disk</p>
+              <h2 className="text-2xl font-bold text-gray-700">{hardiskData?.data.length > 0 ? `(${hardiskData?.data.length})` : ''}</h2>
             </div>
           </div>
         </div>
@@ -107,75 +118,78 @@ function Dashboard() {
             <div>
               <div className=" flex justify-between items-center w-full border-b border-gray-300">
                 <h2 className="px-6 py-4 pb-4 text-xl font-medium">
-                  Recent Transctions
+                  Recent Products
                 </h2>
               </div>
               <table className="w-full table-auto">
                 <thead className="bg-gray-100">
                   <tr className="text-xs text-left text-gray-500 border-b border-gray-200">
                     <th className="flex items-center py-3 pl-6 font-medium">
-                      <span> Transcation ID</span>
+                      Images
                     </th>
-                    <th className="px-6 py-3 font-medium">Name</th>
-                    <th className="px-6 py-3 font-medium">Email</th>
-                    <th className="px-6 py-3 font-medium">Subscription Plan</th>
-                    <th className="px-6 py-3 font-medium">
-                      Subscription Status
-                    </th>
-                    <th className="px-6 py-3 font-medium">Payment Status</th>
-                    <th className="px-6 py-3 font-medium">Amount</th>
+                    <th className="px-6 py-3 font-medium">Products Name</th>
+                    <th className="px-6 py-3 font-medium">Brands</th>
+                    <th className="px-6 py-3 font-medium">hardisk</th>
+                    {/* <th className="px-6 py-3 font-medium">cpu</th> */}
+                    <th className="px-6 py-3 font-medium">operating sysytem</th>
+                    <th className="px-6 py-3 font-medium">Ram</th>
+                    <th className="px-6 py-3 font-medium">price</th>
+                    <th className="px-6 py-3 font-medium">stock</th>
+                    <th className="px-6 py-3 font-medium">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.transactions.map((transaction, index) => (
-                    <tr key={index} className="border-b border-gray-200">
-                      <td className="flex items-center px-6 py-3 text-sm font-medium">
-                        <p className="text-gray-400">
-                          {transaction?.user?.userPanelId || "N/A"}
-                        </p>
-                      </td>
-                      <td className="px-6 text-sm font-medium">
-                        {transaction?.user?.username || "N/A"}
-                      </td>
-                      <td className="px-6 text-sm font-medium">
-                        {transaction?.user?.email || "N/A"}
-                      </td>
-                      <td className="px-6 text-sm font-medium">
-                        {transaction?.subscriptionDetails?.plan?.title || "N/A"}
-                      </td>
-                      <td className="px-6 text-sm font-medium">
-                        <span className="inline-block px-2 py-1 text-green-700 bg-green-100 rounded-md">
-                          {transaction?.user?.subscriptionStatus}
-                        </span>
-                      </td>
-                      <td className="px-6 text-sm">
-                        <span
-                          className={`inline-block px-2 py-1 rounded-md ${
-                            transaction?.paymentStatus === "success"
-                              ? "text-green-700 bg-green-100"
-                              : transaction?.paymentStatus === "pending"
-                              ? "text-orange-500 bg-orange-100"
-                              : "text-gray-400 bg-gray-100"
-                          }`}
-                        >
-                          {transaction?.paymentStatus || "N/A"}
-                        </span>
-                      </td>
-                      <td className="px-6 text-sm font-medium">
-                        ${transaction?.amount || "N/A"}
-                      </td>
-                    </tr>
-                  ))}
+                  {productData?.data?.map((product) => (
+                      <tr
+                        key={product._id}
+                        className="border-b border-gray-200"
+                      >
+                        <td className="px-6 text-sm font-medium">
+                          <img
+                            src={product?.image}
+                            alt="product"
+                            className="w-10 h-10 rounded-md"
+                          />
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.productname.substring(0, 23)}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.brands}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.hardisk}
+                        </td>
+                        {/* <td className="px-6 text-sm font-medium">
+                          {product.cpu}
+                        </td> */}
+                        <td className="px-6 text-sm font-medium">
+                          {product.operatingsysytem}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.ram}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.price}
+                        </td>
+                        <td className="px-6 text-sm font-medium">
+                          {product.stock}
+                        </td>
+                        <td className="px-6 text-sm">
+                          <span
+                            className={`inline-block px-2 py-1 ${
+                              product.status === 1
+                                ? "text-green-700 bg-green-100"
+                                : "text-red-700 bg-red-100"
+                            } rounded-md`}
+                          >
+                            {product.status === 1 ? "Active" : "Inactive"}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
-              <div className="flex flex-wrap items-center justify-end px-6 py-3">
-                <button
-                  className="px-4 py-2 mr-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
-                  onClick={() => navigate("/transaction-history")}
-                >
-                  view all
-                </button>
-              </div>
             </div>
           </div>
         </div>
