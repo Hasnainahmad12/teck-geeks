@@ -31,6 +31,7 @@ import EditAsin from "./components/Asin/EditAsin";
 import Category from "./pages/Category";
 import AddCategory from "./components/Category/AddCategory";
 import EditCategory from "./components/Category/EditCategory";
+import AddThumbnail from "./components/Products/AddThumbnail";
 const App = () => {
   return (
     <>
@@ -70,6 +71,8 @@ const App = () => {
 
           <Route path="/products/add" element={<AddProduct />} />
           <Route path="/products/edit/:id" element={<EditProduct />} />
+          <Route path="/thumbnail/edit/:id" element={<AddThumbnail />} />
+
           <Route path="/customer-list" element={<CustomersList />} />
           <Route path="/customers/edit/:id" element={<CustomerDetails />} />
           <Route path="/transaction-history" element={<TransactionHistory />} />

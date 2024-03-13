@@ -31,6 +31,18 @@ export const ProductsSlice = ApiSlice.injectEndpoints({
             },
             invalidatesTags: ["Product"],
         }),
+        updatethumbnail: builder.mutation({
+            query: (args) => {
+                const { id, data } = args;
+                return {
+                    url: `/productsthumbnail/${id}`,
+                    method: "PUT",
+                    body: data,
+                };
+
+            },
+            invalidatesTags: ["Product"],
+        }),
         deleteProduct: builder.mutation({
             query: (id) => ({
                 url: `/products/${id}`,
@@ -45,5 +57,6 @@ export const {
     useAddProductMutation,
     useGetProductQuery,
     useUpdateProductMutation,
+    useUpdatethumbnailMutation, 
     useDeleteProductMutation,
 } = ProductsSlice;

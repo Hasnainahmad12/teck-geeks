@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from "react";
 import SideNav from "../../layouts/SideNav";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoArrowBackOutline, IoCloudUploadOutline } from "react-icons/io5";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   useGetPlansQuery,
-  useUpdatePlanMutation,
 } from "../../apis/AddBrand/AddBrandSlice";
 import toast from "react-hot-toast";
-import { useGetHardDeskQuery } from "../../apis/AddHardDesk/AddHardDesk";
-import { useGetCpuQuery } from "../../apis/Cpu/Cpu";
-import { useGetOperatingSystemQuery } from "../../apis/OperatingSystem/OperatingSystem";
-import { useGetRamQuery } from "../../apis/Ram/Ram";
-import { useGetAsinQuery } from "../../apis/Asin/Asin";
 import { useGetCategoryQuery } from "../../apis/Category/Category";
 import axios from "axios";
 import { useUpdateProductMutation } from "../../apis/Products/Products";
+import ReactQuill, { Quill } from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import AddThumbnail from "./AddThumbnail";
 
 function EditProduct() {
   const [preview, setPreview] = useState(null);
@@ -34,6 +29,10 @@ function EditProduct() {
   const [status, setStatus] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [image, setImage] = useState(null);
+ 
+  const handleChangeeng = (value) => {
+      setDescription(value);
+  };
 
   const navigate = useNavigate();
 
@@ -42,12 +41,7 @@ function EditProduct() {
     useUpdateProductMutation();
   const { id } = useParams();
 
-  const { data: brandsData, isLoading: brandsLoading, isError: brandsError } = useGetPlansQuery();
-  const { data: hardDisksData, isError: hardDisksError } = useGetHardDeskQuery();
-  const { data: cpuData, isError: cpuDataError } = useGetCpuQuery();
-  const { data: operatinSystemData, isError: operatinSystemDataError } = useGetOperatingSystemQuery();
-  const { data: ramData, isError: ramDataError } = useGetRamQuery();
-  const { data: asinData, isError: asinDataError } = useGetAsinQuery();
+  const { data: brandsData, isError: brandsError } = useGetPlansQuery();
   const { data: categoryData, isError: categoryDataError } = useGetCategoryQuery();
 
   useEffect(() => {
@@ -64,11 +58,10 @@ function EditProduct() {
         setRam(res?.data?.data?.ram || "");
         setAsin(res?.data?.data?.asin || "");
         setStock(res?.data?.data?.stock || "");
-        setDescription(res?.data?.data?.description || "");
+        setDescription(res?.data?.data?.description[0] || "");
         setPrice(res?.data?.data?.price || "");
         setStatus(res?.data?.data?.status.toString() || "");
         setCategoryId(res?.data?.data?.categoryId || "");
-        // setImage(res?.data?.data?.image || "");
         setPreview(res?.data?.data?.image || "");
       } 
       catch (error) {
@@ -83,25 +76,10 @@ function EditProduct() {
     if (brandsError) {
       toast.error("Failed to fetch brands");
     }
-    if (hardDisksError) {
-      toast.error("Failed to fetch hard disks");
-    }
-    if (cpuDataError) {
-      toast.error("Failed to fetch cpu");
-    }
-    if (operatinSystemDataError) {
-      toast.error("Failed to fetch operating system");
-    }
-    if (ramDataError) {
-      toast.error("Failed to fetch ram");
-    }
-    if (asinDataError) {
-      toast.error("Failed to fetch asin");
-    }
     if (categoryDataError) {
       toast.error("Failed to fetch category");
     }
-  }, [brandsError, hardDisksError, cpuDataError, operatinSystemDataError, ramDataError, asinDataError, categoryDataError]);
+  }, [brandsError, categoryDataError]);
 
 
   useEffect(() => {
@@ -153,6 +131,49 @@ function EditProduct() {
     }
   };
 
+
+  const modules = {
+      toolbar: [
+          [{ header: '1' }, { header: '2' }, { font: [] }],
+          [{ size: [] }],
+          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+          [
+              { list: 'ordered' },
+              { list: 'bullet' },
+              { indent: '-1' },
+              { indent: '+1' }
+          ],
+          ['link', 'image', 'video'],
+          ['clean'], // <-- Comma was missing here
+          [{ 'color': [] }],
+          [{ 'background': [] }],
+          [{ 'font': [] }],
+      ],
+      clipboard: {
+          // toggle to add extra line breaks when pasting HTML:
+          matchVisual: false
+      },
+    
+  };
+
+  const formats = [
+      'header',
+      'font',
+      'size',
+      'bold',
+      'italic',
+      'underline',
+      'strike',
+      'blockquote',
+      'list',
+      'bullet',
+      'indent',
+      'link',
+      'color',
+      'background',
+
+  ];
+
   return (
     <SideNav>
       <section className="py-8 bg-gray-100">
@@ -188,35 +209,22 @@ function EditProduct() {
                   placeholder="Enter Product Name"
                 />
               </div>
-              <div className="mb-6 flex flex-col">
-                <span>Status</span>
-                {/* dropdwon list for active and inactive */}
-                <select
-                  onChange={(e) => setStatus(e.target.value)}
-                  name="status"
-                  value={status}
-                  className="block max-w-md px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                >
-                  <option value={""}>Select Status</option>
-                  <option value={1}>Active</option>
-                  <option value={0}>Inactive</option>
-                </select>
-              </div>
-
-
+            
               <div className="w-full flex justify-between gap-4">
                 <div className="mb-6 w-full">
                   <label className="block mb-2 text-sm font-medium" htmlFor>
-                    Slug
+                    Status
                   </label>
-                  <input
+                  <select
                     className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
                     type="text"
-                    name="slug"
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    placeholder="Enter Product Slug"
-                  />
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                  >
+                    <option value={""}>Select Status</option>
+                    <option value={1}>Active</option>
+                    <option value={0}>Inactive</option>
+                  </select>
                 </div>
 
                 <div className="mb-6 w-full">
@@ -246,24 +254,20 @@ function EditProduct() {
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Hardisk
                   </label>
-                  <select
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                  <input className="
+                    block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
+                    type="text"
                     name="hardisk"
-                    onChange={(e) => setHardisk(e.target.value)}
                     value={hardisk}
-                  >
-                    <option value="">Select Hardisk</option>
-                    {hardDisksData?.data?.map((hardDisk) => (
-                      <option key={hardDisk.id} value={hardDisk?.hardiskname}>
-                        {hardDisk?.hardiskname}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={(e) => setHardisk(e.target.value)}
+                    placeholder="Enter Hardisk"
+                  />
+
                 </div>
 
                 <div className="mb-6 w-full">
                   <label className="block mb-2 text-sm font-medium" htmlFor>
-                    Cpu
+                    CPU
                   </label>
                   <input className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
                       type="text"
@@ -294,19 +298,13 @@ function EditProduct() {
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Ram
                   </label>
-                  <select
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                  <input className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                    type="text"
                     name="ram"
                     onChange={(e) => setRam(e.target.value)}
+                    placeholder="Enter Ram"
                     value={ram}
-                  >
-                    <option value="">Select Ram</option>
-                    {ramData?.data?.map((ramItem) => (
-                      <option key={ramItem.id} value={ramItem?.ramname}>
-                        {ramItem?.ramname}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
               </div>
 
@@ -410,22 +408,19 @@ function EditProduct() {
                   )}
                 </label>
               </div>
+
               <div className="mb-6">
-                <label className="block mb-2 text-sm font-medium " htmlFor>
-                  Description
-                </label>
-                <textarea
-                  className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
-                  name="description"
-                  rows={5}
-                  placeholder="Write something..."
-                  defaultValue={""}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                  <label className="block mb-2 text-sm font-medium " htmlFor>
+                    Description
+                  </label>
+                  <ReactQuill theme="snow" modules={modules} formats={formats} className=' h-40'
+                    value={description}
+                    onChange={handleChangeeng} />
+                </div>
               </div>
 
-              <div className="mt-7">
+              <div className="mt-24">
                 <div className="flex justify-end space-x-2">
                   <button
                     type="submit"
@@ -457,6 +452,11 @@ function EditProduct() {
                 </div>
               </div>
             </form>
+          </div>
+
+
+          <div>
+            <AddThumbnail />
           </div>
         </div>
       </section>

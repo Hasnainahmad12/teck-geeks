@@ -44,7 +44,7 @@ function SideNav({ children }) {
         <div className="body-content" x-data="{ open: true }">
           <div className="relative lg:block navbar-menu">
             <nav
-              className={`fixed top-0 transition-all lg:mt-0 mt-16 left-0 bottom-0 flex flex-col shadow bg-gray-50 overflow-hidden z-50 ${
+              className={`fixed top-0 transition-all lg:mt-0 mt-16 left-0 bottom-0 flex flex-col shadow bg-primary-sidebar overflow-hidden z-50 ${
                 isOpen ? "w-[280px]" : "w-0"
               }`}
               id="sidenav"
@@ -67,12 +67,12 @@ function SideNav({ children }) {
                     >
                       <span
                         className="drop-shadow-lg mr-2 flex h-8 w-8 items-center 
-                                                            justify-center rounded-lg bg-white bg-center 
+                                                            justify-center rounded-lg bg-D2D180 bg-center 
                                                              text-center xl:p-2.5"
                       >
                         <AiOutlineDashboard className="w-5 h-5" />
                       </span>
-                      <span>Dashboard</span>
+                      <span className="font-semibold">Dashboard</span>
                     </Link>
                   </li>
                   <li>

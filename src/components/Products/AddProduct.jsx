@@ -143,9 +143,8 @@ function AddProduct() {
                   placeholder="Enter Product Name"
                 />
               </div>
-              <div className="mb-6 flex flex-col">
+              {/* <div className="mb-6 flex flex-col">
                 <span>Status</span>
-                {/* dropdwon list for active and inactive */}
                 <select
                   onChange={(e) => setStatus(e.target.value)}
                   name="status"
@@ -156,20 +155,24 @@ function AddProduct() {
                   <option value={1}>Active</option>
                   <option value={0}>Inactive</option>
                 </select>
-              </div>
+              </div> */}
 
               <div className="w-full flex justify-between gap-4">
                 <div className="mb-6 w-full">
                   <label className="block mb-2 text-sm font-medium" htmlFor>
-                    Slug
+                    Status
                   </label>
-                  <input
+                  <select
                     className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded "
-                    type="text"
-                    name="slug"
-                    onChange={(e) => setSlug(e.target.value)}
-                    placeholder="Enter Product Slug"
-                  />
+                    onChange={(e) => setStatus(e.target.value)}
+                    name="status"
+                    value={status}
+                  >
+                    <option value={""}>Select Status</option>
+                    <option value={1}>Active</option>
+                    <option value={0}>Inactive</option>
+                  </select>
+
                 </div>
 
                 <div className="mb-6 w-full">
@@ -199,19 +202,13 @@ function AddProduct() {
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Hardisk
                   </label>
-                  <select
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
-                    name="hardisk"
-                    onChange={(e) => setHardisk(e.target.value)}
-                    value={hardisk}
-                  >
-                    <option value="">Select Hardisk</option>
-                    {hardDisksData?.data?.map((hardDisk) => (
-                      <option key={hardDisk.id} value={hardDisk?.hardiskname}>
-                        {hardDisk?.hardiskname}
-                      </option>
-                    ))}
-                  </select>
+                  <input className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                      type="text"
+                      name="hardisk"
+                      onChange={(e) => setHardisk(e.target.value)}
+                      placeholder="Enter Hardisk"
+                      value={hardisk}
+                    />
                 </div>
 
                 <div className="mb-6 w-full">
@@ -225,20 +222,6 @@ function AddProduct() {
                       placeholder="Enter Cpu"
                       value={cpu}
                     />
-
-                  {/* <select
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
-                    name="cpu"
-                    onChange={(e) => setCpu(e.target.value)}
-                    value={cpu}
-                  >
-                    <option value="">Select Cpu</option>
-                    {cpuData?.data?.map((cpuItem) => (
-                      <option key={cpuItem.id} value={cpuItem?.cpuname}>
-                        {cpuItem?.cpuname}
-                      </option>
-                    ))}
-                  </select> */}
                 </div>
               </div>
 
@@ -247,38 +230,26 @@ function AddProduct() {
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Operating Sysytem
                   </label>
-                  <select
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
-                    name="operatingsysytem"
-                    onChange={(e) => setOperatingSysytem(e.target.value)}
-                    value={operatingSysytem}
-                  >
-                    <option value="">Select Operating System</option>
-                    {operatinSystemData?.data?.map((os) => (
-                      <option key={os.id} value={os?.operatingname}>
-                        {os?.operatingname}
-                      </option>
-                    ))}
-                  </select>
+                  <input className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                      type="text"
+                      name="operatingsysytem"
+                      onChange={(e) => setOperatingSysytem(e.target.value)}
+                      placeholder="Enter Operating System"
+                      value={operatingSysytem}
+                    />
                 </div>
 
                 <div className="mb-6 w-full">
                   <label className="block mb-2 text-sm font-medium" htmlFor>
                     Ram
                   </label>
-                  <select
-                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                  <input className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded"
+                    type="text"
                     name="ram"
                     onChange={(e) => setRam(e.target.value)}
+                    placeholder="Enter Ram"
                     value={ram}
-                  >
-                    <option value="">Select Ram</option>
-                    {ramData?.data?.map((ramItem) => (
-                      <option key={ramItem.id} value={ramItem?.ramname}>
-                        {ramItem?.ramname}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
               </div>
 
