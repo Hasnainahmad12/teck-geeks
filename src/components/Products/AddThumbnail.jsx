@@ -3,9 +3,7 @@ import SideNav from "../../layouts/SideNav";
 import { IoArrowBackOutline, IoCloudUploadOutline } from "react-icons/io5";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import axios from "axios";
 import {
-  useUpdateProductMutation,
   useUpdatethumbnailMutation,
 } from "../../apis/Products/Products";
 
@@ -16,7 +14,7 @@ function AddThumbnail() {
   const [imageOptional2, setImageOptional2] = useState(null);
   const [imageOptional3, setImageOptional3] = useState(null);
   const navigate = useNavigate();
-
+ 
   const handleImageChange = (event) => {
     const imageFile = event.target.files[0];
     const imageUrl = URL.createObjectURL(imageFile);
@@ -60,32 +58,32 @@ function AddThumbnail() {
     }
   }, [isError, isSuccess, error]);
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
-    const images = [
-      selectedImage,
-      selectedBackImage,
-      imageOptional1,
-      imageOptional2,
-      imageOptional3,
-    ];
-    images.forEach((image) => {
-      if (image) {
-        formData.append("thumbnails", image);
-      }
-    });
-
+  
+    // Append each image to formData if they exist
+    if (selectedImage) formData.append("thumbnails", selectedImage);
+    if (selectedBackImage) formData.append("thumbnails", selectedBackImage);
+    if (imageOptional1) formData.append("thumbnails", imageOptional1);
+    if (imageOptional2) formData.append("thumbnails", imageOptional2);
+    if (imageOptional3) formData.append("thumbnails", imageOptional3);
+  
     try {
-      await updatePlan({ id, data: formData });
-      if (isSuccess) {
-        // handle success, e.g. navigate to another page
-      }
+      await updatePlan(id, formData);
     } catch (error) {
-      // handle error
+      console.error("Error updating thumbnails:", error);
+      // Handle error
+      return;
     }
+  
+    // If successful, handle success
+    toast.success("Product Thumbnail(s) added successfully");
+    navigate("/products");
   };
+  
 
   return (
     <section className="py-8 bg-gray-100">
