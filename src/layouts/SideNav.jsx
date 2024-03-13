@@ -16,6 +16,7 @@ function SideNav({ children }) {
   const [showProfile, setShowProfile] = useState(false);
   const [isCustomersOpen, setIsCustomersOpen] = useState(false);
   const [isMangeOpen, setIsMangeOpen] = useState(false);
+  const [isMangeSliderOpen, setIsMangeSliderOpen] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,6 +32,9 @@ function SideNav({ children }) {
   };
   const handleToggleMange = () => {
     setIsMangeOpen(!isMangeOpen);
+  };
+  const handleToggleMangeSlider = () => {
+    setIsMangeSliderOpen(!isMangeSliderOpen);
   };
 
   const handleLogut = () => {
@@ -175,34 +179,16 @@ function SideNav({ children }) {
                               </span>
                             </Link>
                           </li>
-                          {/* <li>
-                            <Link
-                              to="/manage-add-on"
-                              className="flex items-center py-3 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100"
-                            >
-                              <span className="text-gray-700">
-                                Manage Add-On
-                              </span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to="/manage-suites"
-                              className="flex items-center py-3 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100"
-                            >
-                              <span className="text-gray-700">
-                                Manage Suites
-                              </span>
-                            </Link>
-                          </li> */}
                         </ul>
                       </div>
                     )}
                   </li>
-                  {/* <li>
+
+
+                  <li>
                     <div
                       className="flex items-center px-6 py-4 text-gray-700 group hover:text-gray-600 hover:bg-gray-100 cursor-pointer"
-                      onClick={handleToggleCustomers}
+                      onClick={handleToggleMangeSlider}
                     >
                       <span
                         className="drop-shadow-lg mr-2 flex h-8 w-8 items-center 
@@ -211,31 +197,31 @@ function SideNav({ children }) {
                       >
                         <FaUsers className="w-5 h-5" />
                       </span>
-                      <span>Customers</span>
+                      <span>Media</span>
                       <span className="inline-block ml-auto sidenav-arrow">
-                        {isCustomersOpen ? <FaChevronUp /> : <FaChevronDown />}
+                        {isMangeSliderOpen ? <FaChevronUp /> : <FaChevronDown />}
                       </span>
                     </div>
-                    {isCustomersOpen && (
+                    {isMangeSliderOpen && (
                       <div className="pl-3 ml-3 transition border-gray-500 dropdown-section nested-menu">
                         <ul className="text-sm">
                           <li>
                             <Link
-                              to="/customer-list"
+                              to="/slider"
                               className="flex items-center py-3 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100"
                             >
                               <span className="text-gray-700">
-                                Customer List
+                                Slider
                               </span>
                             </Link>
                           </li>
                           <li>
                             <Link
-                              to="/transaction-history"
+                              to="/banner"
                               className="flex items-center py-3 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100"
                             >
                               <span className="text-gray-700">
-                                Transaction History
+                                Banner
                               </span>
                             </Link>
                           </li>
@@ -243,21 +229,6 @@ function SideNav({ children }) {
                       </div>
                     )}
                   </li>
-                  <li>
-                    <Link
-                      to="/administrator"
-                      className="flex items-center px-6 py-4 text-gray-700 group hover:text-gray-600 hover:bg-gray-100"
-                    >
-                      <span
-                        className="drop-shadow-lg mr-2 flex h-8 w-8 items-center 
-                  justify-center rounded-lg bg-white bg-center 
-                  text-center xl:p-2.5"
-                      >
-                        <MdOutlineAdminPanelSettings className="w-5 h-5" />
-                      </span>
-                      <span>Administrator</span>
-                    </Link>
-                  </li> */}
                 </ul>
               </div>
             </nav>
@@ -310,8 +281,8 @@ function SideNav({ children }) {
                           </p>
                         </div>
                         <div className="mr-2">
-                          <div className="w-8 h-8 flex rounded-full uppercase  bg-gray-400 text-white text-center items-center justify-center">
-                            {admin?.adminData?.username?.slice(0, 2)}
+                          <div className="w-8 h-8 flex rounded-full uppercase bg-gray-400 text-white text-center items-center justify-center">
+                            <img src={Images.Logo} alt=""/>
                           </div>
                         </div>
                         <span>
@@ -323,10 +294,8 @@ function SideNav({ children }) {
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
                           >
-                            <path
-                              d="M9.08335 0.666657C8.75002 0.333323 8.25002 0.333323 7.91669 0.666657L5.00002 3.58332L2.08335 0.666657C1.75002 0.333323 1.25002 0.333323 0.916687 0.666657C0.583354 0.99999 0.583354 1.49999 0.916687 1.83332L4.41669 5.33332C4.58335 5.49999 4.75002 5.58332 5.00002 5.58332C5.25002 5.58332 5.41669 5.49999 5.58335 5.33332L9.08335 1.83332C9.41669 1.49999 9.41669 0.99999 9.08335 0.666657Z"
-                              fill="currentColor"
-                            />
+                              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+
                           </svg>
                         </span>
                       </button>

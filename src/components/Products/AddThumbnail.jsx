@@ -93,7 +93,7 @@ function AddThumbnail() {
         <div className="p-6 ~bg-white rounded-md shadow bg-white">
           <div className="flex justify-between  items-center">
             <h2 className="mb-6 text-xl  font-medium leading-6 text-gray-900 ">
-              Add Thumbnail
+              Add Images
             </h2>
           </div>
           <form onSubmit={handleSubmit}>
@@ -104,7 +104,7 @@ function AddThumbnail() {
               <div className="flex justify-between items-center gap-7 flex-wrap mt-10">
                 <div>
                   <span className="text-secondary font-body sm:text-base text-sm">
-                    Thumbnail Image1
+                    Add Image1
                   </span>
                   <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-blue-500 text-white font-body">
@@ -136,7 +136,7 @@ function AddThumbnail() {
 
                 <div>
                   <span className="text-secondary font-body sm:text-base text-sm">
-                    Thumbnail Image2
+                    Add Image2
                   </span>
                   <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-blue-500 text-white font-body">
@@ -171,7 +171,7 @@ function AddThumbnail() {
                 <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-x-4 gap-y-28 lg:gap-y-16 sm:mt-20 mt-24">
                   <div>
                     <span className="text-secondary font-body sm:text-base text-sm">
-                      Thumbnail Image3
+                      Add Image3
                     </span>
                     <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                       <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-blue-500 text-white font-body">
@@ -202,7 +202,7 @@ function AddThumbnail() {
 
                   <div>
                     <span className="text-secondary font-body sm:text-base text-sm">
-                      Thumbnail Image4
+                      Add Image4
                     </span>
                     <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                       <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-blue-500 text-white font-body">
@@ -233,7 +233,7 @@ function AddThumbnail() {
 
                   <div>
                     <span className="text-secondary font-body sm:text-base text-sm">
-                      Thumbnail Image5
+                      Add Image5
                     </span>
                     <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                       <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-blue-500 text-white font-body">
@@ -291,7 +291,7 @@ function AddThumbnail() {
                       ></path>
                     </svg>
                   ) : (
-                    "Add Thumbnail"
+                    "Add Images"
                   )}
                 </button>
               </div>

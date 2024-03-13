@@ -388,7 +388,7 @@ function EditProduct() {
 
               {/* image */}
               <div className="mb-6">
-                <h6>Image </h6>
+                <h6>Thumbnail </h6>
                 <label className="block mb-2 text-sm font-medium">
                   <input
                     style={{ display: "none" }}

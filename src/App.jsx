@@ -32,6 +32,12 @@ import Category from "./pages/Category";
 import AddCategory from "./components/Category/AddCategory";
 import EditCategory from "./components/Category/EditCategory";
 import AddThumbnail from "./components/Products/AddThumbnail";
+import Slider from "./pages/Slider";
+import AddSlider from "./components/Slider/AddSlider";
+import EditSlider from "./components/Slider/EdirSlider";
+import Banner from "./pages/Banner";
+import AddBanner from "./components/Banner/AddBanner";
+import EditBanner from "./components/Banner/EditBanner";
 const App = () => {
   return (
     <>
@@ -72,6 +78,14 @@ const App = () => {
           <Route path="/products/add" element={<AddProduct />} />
           <Route path="/products/edit/:id" element={<EditProduct />} />
           <Route path="/thumbnail/edit/:id" element={<AddThumbnail />} />
+
+          <Route path="/slider" element={<Slider />} />
+          <Route path="/slider/add" element={<AddSlider />} />
+          <Route path="/slider/edit/:id" element={<EditSlider />} />
+
+          <Route path="/banner" element={<Banner />} />
+          <Route path="/banner/add" element={<AddBanner />} />
+          <Route path="/banner/edit/:id" element={<EditBanner />} />
 
           <Route path="/customer-list" element={<CustomersList />} />
           <Route path="/customers/edit/:id" element={<CustomerDetails />} />
