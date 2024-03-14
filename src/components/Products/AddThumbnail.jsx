@@ -13,36 +13,48 @@ function AddThumbnail() {
   const [imageOptional1, setImageOptional1] = useState(null);
   const [imageOptional2, setImageOptional2] = useState(null);
   const [imageOptional3, setImageOptional3] = useState(null);
+
+  const [previewImage, setPreviewImage] = useState(null);
+  const [previewBackImage, setPreviewBackImage] = useState(null);
+  const [previewImageOptional1, setPreviewImageOptional1] = useState(null);
+  const [previewImageOptional2, setPreviewImageOptional2] = useState(null);
+  const [previewImageOptional3, setPreviewImageOptional3] = useState(null);
+
   const navigate = useNavigate();
  
   const handleImageChange = (event) => {
     const imageFile = event.target.files[0];
     const imageUrl = URL.createObjectURL(imageFile);
-    setSelectedImage(imageUrl);
+    setSelectedImage(imageFile);
+    setPreviewImage(imageUrl);
   };
 
   const handleBackImageChange = (event) => {
     const backImageFile = event.target.files[0];
     const backImageUrl = URL.createObjectURL(backImageFile);
-    setSelectedBackImage(backImageUrl);
+    setSelectedBackImage(backImageFile);
+    setPreviewBackImage(backImageUrl);
   };
 
   const handleImageOptional1Change = (event) => {
     const imageOptional1File = event.target.files[0];
     const imageOptional1Url = URL.createObjectURL(imageOptional1File);
-    setImageOptional1(imageOptional1Url);
+    setImageOptional1(imageOptional1File);
+    setPreviewImageOptional1(imageOptional1Url); 
   };
 
   const handleImageOptional2Change = (event) => {
     const imageOptional2File = event.target.files[0];
     const imageOptional2Url = URL.createObjectURL(imageOptional2File);
-    setImageOptional2(imageOptional2Url);
+    setImageOptional2(imageOptional2File);
+    setPreviewImageOptional2(imageOptional2Url);
   };
 
   const handleImageOptional3Change = (event) => {
     const imageOptional3File = event.target.files[0];
     const imageOptional3Url = URL.createObjectURL(imageOptional3File);
-    setImageOptional3(imageOptional3Url);
+    setImageOptional3(imageOptional3File);
+    setPreviewImageOptional3(imageOptional3Url);
   };
 
   const [updatePlan, { isLoading, isSuccess, isError, error }] =
@@ -65,12 +77,9 @@ function AddThumbnail() {
     const formData = new FormData();
   
     // Append each image to formData if they exist
-    if (selectedImage) formData.append("thumbnails", selectedImage);
-    if (selectedBackImage) formData.append("thumbnails", selectedBackImage);
-    if (imageOptional1) formData.append("thumbnails", imageOptional1);
-    if (imageOptional2) formData.append("thumbnails", imageOptional2);
-    if (imageOptional3) formData.append("thumbnails", imageOptional3);
-  
+    [selectedImage, selectedBackImage, imageOptional1, imageOptional2, imageOptional3].forEach((image) => {
+      if (image) formData.append("thumbnails", image);
+    });
     try {
       await updatePlan({ id, data: formData });
     } catch (error) {
@@ -120,10 +129,10 @@ function AddThumbnail() {
                         />
                       </label>
                     </div>
-                    {selectedImage && (
+                    {previewImage && (
                       <div className="h-56 flex justify-center items-center object-contain w-auto">
                         <img
-                          src={selectedImage}
+                          src={previewImage}
                           className="h-56 w-56"
                           alt="Selected Image"
                         />
@@ -151,10 +160,10 @@ function AddThumbnail() {
                         />
                       </label>
                     </div>
-                    {selectedBackImage && (
+                    {previewBackImage && (
                       <div className="h-56 flex justify-center items-center object-contain w-auto">
                         <img
-                          src={selectedBackImage}
+                          src={previewBackImage}
                           className="h-56 w-56"
                           alt="Selected Image"
                         />
@@ -186,10 +195,10 @@ function AddThumbnail() {
                           />
                         </label>
                       </div>
-                      {imageOptional1 && (
+                      {previewImageOptional1 && (
                         <div className="h-56 flex justify-center items-center object-contain w-auto">
                           <img
-                            src={imageOptional1}
+                            src={previewImageOptional1}
                             className="h-56 w-56"
                             alt="Selected Image"
                           />
@@ -217,10 +226,10 @@ function AddThumbnail() {
                           />
                         </label>
                       </div>
-                      {imageOptional2 && (
+                      {previewImageOptional2 && (
                         <div className="h-56 flex justify-center items-center object-contain w-auto">
                           <img
-                            src={imageOptional2}
+                            src={previewImageOptional2}
                             className="h-56 w-56"
                             alt="Selected Image"
                           />
@@ -248,10 +257,10 @@ function AddThumbnail() {
                           />
                         </label>
                       </div>
-                      {imageOptional3 && (
+                      {previewImageOptional3 && (
                         <div className="h-56 flex justify-center items-center object-contain w-auto">
                           <img
-                            src={imageOptional3}
+                            src={previewImageOptional3}
                             className="h-56 w-56"
                             alt="Selected Image"
                           />
